@@ -1,26 +1,50 @@
 # root@farah — terminal portfolio
 
-Farah Grissa's portfolio, styled as a Linux terminal (neon pink, violet and cyan palette).
+An interactive portfolio styled as a Linux terminal, with a neon pink, violet and cyan palette. Type commands to explore my projects, skills and contact info.
+
+**Live demo:** https://farahgrissa.github.io/root-farah/
+
+## Features
+
+- Interactive shell: type commands and get answers, just like a real terminal
+- Projects, skills and links all browsable from the prompt
+- Single file, no build step, no dependencies
+- Easy to customize: content and colors live in one place
+
+## Available commands
+
+| Command | What it does |
+|---|---|
+| `whoami` | Short introduction |
+| `cat <id>` | Details of a project |
+| `contact` | Email and social links |
+| `sudo hire-me` | Try it 😉 |
 
 ## Run locally
-Just open `index.html` in your browser (double-click), or:
+
+Open `index.html` in your browser (double-click), or serve it:
 
 ```bash
-python -m http.server 8000   # then http://localhost:8000
+python -m http.server 8000
+# then open http://localhost:8000
 ```
 
-## Edit the content
+## Customize
+
 Everything lives in `index.html`, inside the `<script>` tag:
-- `PROJECTS`: the project list (`cat <id>`)
+
+- `PROJECTS`: the project list, shown with `cat <id>`
 - `SKILLS`: skills and their level (out of 10)
-- `LINKS`: GitHub, LinkedIn
-- `commands`: the terminal commands (`whoami`, `contact`, `sudo hire-me`…)
+- `LINKS`: GitHub and LinkedIn
+- `commands`: the terminal commands and their output
 
-Colors are in the `:root` block at the top of the `<style>`.
+Colors are defined in the `:root` block at the top of the `<style>` tag.
 
-## To do
-- [x] Add the email to `contact`
-- [x] Pick the language (English)
-- [ ] Replace the ASCII mascot
-- [ ] Migrate to React + TypeScript + Tailwind (`My-portfolio` repo)
-- [ ] Deploy (GitHub Pages / Netlify / Vercel)
+## Tech
+
+HTML, CSS and vanilla JavaScript. Deployed with GitHub Pages.
+
+## Author
+
+**Farah Grissa** — final-year computer science engineering student (artificial intelligence), interested in DevSecOps, cloud and AI agents.
+GitHub: [@Farahgrissa](https://github.com/Farahgrissa)
