@@ -1,26 +1,26 @@
-# root@farah — portfolio terminal
+# root@farah — terminal portfolio
 
-Portfolio de Farah Grissa au style terminal Linux (palette néon rose, violet et cyan).
+Farah Grissa's portfolio, styled as a Linux terminal (neon pink, violet and cyan palette).
 
-## Lancer en local
-Ouvre simplement `index.html` dans ton navigateur (double-clic), ou :
+## Run locally
+Just open `index.html` in your browser (double-click), or:
 
 ```bash
-python -m http.server 8000   # puis http://localhost:8000
+python -m http.server 8000   # then http://localhost:8000
 ```
 
-## Modifier le contenu
-Tout est dans `index.html`, dans la balise `<script>` :
-- `PROJECTS` : la liste des projets (`cat <id>`)
-- `SKILLS` : les compétences et leur niveau (sur 10)
-- `LINKS` : GitHub, LinkedIn
-- `commands` : les commandes du terminal (`whoami`, `contact`, `sudo hire-me`…)
+## Edit the content
+Everything lives in `index.html`, inside the `<script>` tag:
+- `PROJECTS`: the project list (`cat <id>`)
+- `SKILLS`: skills and their level (out of 10)
+- `LINKS`: GitHub, LinkedIn
+- `commands`: the terminal commands (`whoami`, `contact`, `sudo hire-me`…)
 
-Les couleurs sont dans le bloc `:root` en haut du `<style>`.
+Colors are in the `:root` block at the top of the `<style>`.
 
-## À faire
-- [ ] Ajouter l'e-mail dans `contact`
-- [ ] Choisir la langue (FR / EN / commande `lang`)
-- [ ] Remplacer la mascotte ASCII
-- [ ] Migrer vers React + TypeScript + Tailwind (dépôt `My-portfolio`)
-- [ ] Déployer (GitHub Pages / Netlify / Vercel)
+## To do
+- [x] Add the email to `contact`
+- [x] Pick the language (English)
+- [ ] Replace the ASCII mascot
+- [ ] Migrate to React + TypeScript + Tailwind (`My-portfolio` repo)
+- [ ] Deploy (GitHub Pages / Netlify / Vercel)

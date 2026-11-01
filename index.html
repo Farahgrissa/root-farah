@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Farah Grissa — élève ingénieure ENSI · cybersécurité, DevSecOps, ML. Portfolio terminal.">
+<meta name="description" content="Farah Grissa — computer engineering student at ENSI. Terminal portfolio.">
 <title>root@farah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -221,7 +221,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
     </div>
 
     <div class="dock" aria-label="Quick commands">
-        <span class="hint">pressée ? clique →</span>
+        <span class="hint">in a hurry? click →</span>
         <button class="chip" data-cmd="whoami" type="button">whoami</button>
         <button class="chip" data-cmd="ls projects" type="button">ls projects</button>
         <button class="chip" data-cmd="cat proxym.log" type="button">cat proxym.log</button>
@@ -252,64 +252,75 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
             id: 'devsecops-pipeline',
             name: 'Steam-Microservices-DevSecOps',
             tag: 'DevSecOps',
-            summary: 'Chaîne CI/CD sécurisée pour 4 microservices Spring Boot — stage Proxym Group.',
+            summary: 'Secure CI/CD pipeline for 4 Spring Boot microservices — Proxym Group internship.',
             stack: 'Jenkins · Docker · SonarQube · Trivy · OWASP ZAP · Harbor',
-            highlights: ['SAST SonarQube bloquant (quality gate)', 'SCA Trivy bloquant sur CVE CRITICAL corrigeable', 'Registre privé Harbor, compte robot à droits minimaux', 'DAST OWASP ZAP après déploiement'],
+            highlights: ['Blocking SonarQube SAST (quality gate)', 'Blocking Trivy SCA on fixable CRITICAL CVEs', 'Private Harbor registry, least-privilege robot account', 'OWASP ZAP DAST after deployment'],
             url: 'https://github.com/Farahgrissa/Steam-Microservices-DevSecOps',
         },
         {
             id: 'ids-xai',
             name: 'ids-xai-classification',
             tag: 'ML · Security',
-            summary: 'Détection d\'intrusion réseau explicable sur CSE-CIC-IDS2018.',
+            summary: 'Explainable network intrusion detection on CSE-CIC-IDS2018.',
             stack: 'Python · scikit-learn · XGBoost · SHAP · LIME · Streamlit · FastAPI',
-            highlights: ['5 modèles comparés', 'Chaque alerte expliquée (SHAP / LIME)', 'App Streamlit + API FastAPI en ligne'],
+            highlights: ['5 models compared', 'Every alert explained (SHAP / LIME)', 'Live Streamlit app + FastAPI API'],
             url: 'https://github.com/Farahgrissa/ids-xai-classification',
             demo: 'https://ids-xai-classification.streamlit.app',
         },
         {
-            id: 'openstack-anomaly',
-            name: 'openstack-log-anomaly-detection',
-            tag: 'AIOps',
-            summary: 'Détection d\'incidents quasi temps réel sur logs OpenStack, explications par LLM.',
-            stack: 'Fluentd · OpenSearch · scikit-learn · Gemini/Groq · Streamlit',
-            highlights: ['AUC-ROC 0.974 · F1 0.84', '7/7 incidents détectés', 'Worker streaming + dashboard live'],
-            url: 'https://github.com/Farahgrissa/openstack-log-anomaly-detection',
+            id: 'fraude-xai',
+            name: 'fraude-xai-ibm-tabformer',
+            tag: 'ML · XAI',
+            summary: 'Explainable credit card fraud detection: risk ranking, cost-based alert threshold.',
+            stack: 'Python · XGBoost · SHAP · FastAPI · Streamlit · Docker',
+            highlights: ['2.6M transactions, chronological split, 33 leak-free features', 'XGBoost: ROC-AUC 0.989 · 65% recall at ~8 alerts/day', 'Fraud cost cut by 53% on 2019 data', 'Every alert explained with SHAP reason codes'],
+            url: 'https://github.com/Farahgrissa/fraude-xai-ibm-tabformer',
+            demo: 'https://fraude-xai-ibm-tabformer.streamlit.app',
+        },
+        {
+            id: 'medical-appointments',
+            name: 'medical-appointments',
+            tag: 'Full-stack',
+            summary: 'Medical appointment booking for patients, doctors and admins.',
+            stack: 'Laravel · Vue 3 · Inertia · PostgreSQL · Docker',
+            highlights: ['78 tests, GitHub Actions CI', 'Double-booking prevention (SQL locking)', 'Docker image + Render blueprint'],
+            url: 'https://github.com/Farahgrissa/medical-appointments',
         },
         {
             id: 'rsa-breaker',
             name: 'Attaque_RSA',
             tag: 'Crypto',
-            summary: 'Récupération de clés privées RSA faibles.',
+            summary: 'Recovering private keys from weak RSA parameters.',
             stack: 'Python · sympy',
-            highlights: ['Attaque de Wiener (fractions continues)', 'Lookup FactorDB', 'Factorisation Pollard rho / SIQS'],
+            highlights: ['Wiener\'s attack (continued fractions)', 'FactorDB lookup', 'Pollard rho / SIQS factorization'],
             url: 'https://github.com/Farahgrissa/Attaque_RSA',
         },
         {
-            id: 'clinova',
-            name: 'medical-appointments (Clinova)',
-            tag: 'Full-stack',
-            summary: 'Prise de rendez-vous médicaux patients / médecins / admin.',
-            stack: 'Laravel · Vue 3 · Inertia · PostgreSQL · Docker',
-            highlights: ['78 tests, CI GitHub Actions', 'Anti double-réservation (verrou SQL)', 'Image Docker + blueprint Render'],
-            url: 'https://github.com/Farahgrissa/medical-appointments',
+            id: 'openstack-anomaly',
+            name: 'openstack-log-anomaly-detection',
+            tag: 'AIOps',
+            summary: 'Near-real-time incident detection on OpenStack logs, explained by an LLM.',
+            stack: 'Fluentd · OpenSearch · scikit-learn · Gemini/Groq · Streamlit',
+            highlights: ['AUC-ROC 0.974 · F1 0.84', '7/7 incidents detected', 'Streaming worker + live dashboard'],
+            url: 'https://github.com/Farahgrissa/openstack-log-anomaly-detection',
         },
         {
             id: 'tunihack',
-            name: 'TuniHack 11 (club OSSEC)',
+            name: 'TuniHack 11 (OSSEC club)',
             tag: 'Web',
-            summary: 'Site de l\'événement TuniHack : programme, compte à rebours, inscriptions d\'équipes.',
+            summary: 'TuniHack event website: schedule, countdown, team registration.',
             stack: 'React · Tailwind CSS',
-            highlights: ['Contraintes de taille d\'équipe dynamiques', 'Calcul automatique du prix'],
+            highlights: ['Dynamic team size constraints', 'Automatic price calculation'],
             url: 'https://github.com/Farahgrissa/ossec-community',
         },
     ];
 
     const SKILLS = [
-        ['Security / DevSecOps', ['Jenkins', 'Docker', 'SonarQube', 'Trivy', 'OWASP ZAP', 'Harbor', 'Linux'], 8],
-        ['Data / ML', ['Python', 'scikit-learn', 'XGBoost', 'SHAP', 'pandas', 'FastAPI', 'Streamlit'], 8],
+        ['Agentic AI / LLM', ['ReAct agent', 'tool calling', 'MCP (FastMCP)', 'Ollama', 'Gemini/Groq API', 'prompt engineering', 'LangChain/LangGraph (basics)'], 7],
+        ['Data / ML', ['Python', 'scikit-learn', 'XGBoost', 'pandas', 'XAI (SHAP, LIME)', 'anomaly detection', 'NLP', 'FastAPI', 'Streamlit'], 8],
+        ['DevSecOps', ['Docker', 'Docker Compose', 'Kubernetes', 'Terraform', 'Jenkins', 'SonarQube', 'Trivy', 'OWASP ZAP', 'Harbor', 'Git', 'Linux'], 7],
         ['Observability', ['Fluentd', 'OpenSearch', 'OpenStack'], 6],
-        ['Web', ['TypeScript', 'React', 'Vue', 'Laravel', 'Spring Boot', 'PostgreSQL'], 7],
+        ['Web', ['Java (Spring Boot)', 'PHP (Laravel)', 'Vue.js', 'React', 'REST APIs', 'SQL / PostgreSQL', 'Bash'], 7],
     ];
 
     const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -338,27 +349,27 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
     const commands = {
         help() {
             const rows = [
-                ['whoami', 'qui je suis'],
-                ['ls projects', 'mes projets'],
-                ['cat <projet>', 'détails d\'un projet (tab pour compléter)'],
-                ['cat proxym.log', 'mon stage DevSecOps'],
-                ['skills', 'compétences'],
-                ['contact', 'me joindre'],
-                ['sudo hire-me'],
-                ['history · clear · date · banner', 'utilitaires'],
+                ['whoami', 'who I am'],
+                ['ls projects', 'my projects'],
+                ['cat <project>', 'project details (tab to complete)'],
+                ['cat proxym.log', 'my DevSecOps internship'],
+                ['skills', 'skills'],
+                ['contact', 'get in touch'],
+                ['sudo hire-me', ''],
+                ['history · clear · date · banner', 'utilities'],
             ];
-            return `<div class="block"><span class="c-muted"># commandes disponibles</span>\n${rows
+            return `<div class="block"><span class="c-muted"># available commands</span>\n${rows
                 .map(([c, d]) => `  <span class="c-pink">${esc(c.padEnd(20))}</span><span class="c-muted">${esc(d)}</span>`)
                 .join('\n')}</div>`;
         },
         whoami() {
             const info = [
                 ['user', '<span class="c-pink c-bold">Farah Grissa</span>'],
-                ['role', 'élève ingénieure en informatique'],
-                ['school', 'ENSI — Tunisie · spécialité IA'],
-                ['focus', 'cybersécurité · DevSecOps · ML explicable'],
-                ['uptime', '3e année, 2 stages'],
-                ['shell', 'zsh + beaucoup de café'],
+                ['role', 'computer engineering student'],
+                ['school', 'ENSI — Tunisia · AI major'],
+                ['focus', 'explainable ML · web development · security · DevOps'],
+                ['uptime', 'final year, 2 internships'],
+                ['shell', 'zsh + lots of coffee'],
                 ['status', '<span class="c-cyan">● open to opportunities</span>'],
             ];
             return `<div class="block fetch"><div class="art" aria-hidden="true">${esc(ART)}</div><div class="info">${info
@@ -370,17 +381,17 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
                 return `<div class="block"><span class="c-muted">total ${PROJECTS.length}</span>\n${PROJECTS.map(
                     (p) =>
                         `<span class="c-muted">drwxr-xr-x</span>  <span class="dir">${esc(p.id.padEnd(20))}</span> <span class="c-violet">[${esc(p.tag)}]</span> ${esc(p.summary)}`,
-                ).join('\n')}\n\n<span class="c-muted">→ </span><span class="c-pink">cat ${PROJECTS[0].id}</span><span class="c-muted"> pour les détails</span></div>`;
+                ).join('\n')}\n\n<span class="c-muted">→ </span><span class="c-pink">cat ${PROJECTS[0].id}</span><span class="c-muted"> for details</span></div>`;
             }
             return `<div class="block"><span class="dir">projects/</span>   <span class="c-pink">proxym.log</span>   <span class="c-violet">skills.txt</span>   <span class="c-cyan">contact.vcf</span>   <span class="c-muted">.secrets (permission denied)</span></div>`;
         },
         cat(args) {
             const target = (args[0] || '').replace(/^projects\//, '').replace(/\/$/, '');
-            if (!target) return `<span class="c-warn">cat: opérande manquante</span> — essaie <span class="c-pink">cat proxym.log</span>`;
+            if (!target) return `<span class="c-warn">cat: missing operand</span> — try <span class="c-pink">cat proxym.log</span>`;
             if (target === 'proxym.log') return commands['cat proxym.log']();
             if (target === 'skills.txt') return commands.skills();
             if (target === 'contact.vcf') return commands.contact();
-            if (target === '.secrets') return `<span class="c-warn">cat: .secrets: Permission denied</span> <span class="c-muted">(bien essayé)</span>`;
+            if (target === '.secrets') return `<span class="c-warn">cat: .secrets: Permission denied</span> <span class="c-muted">(nice try)</span>`;
             const p = PROJECTS.find((x) => x.id === target);
             if (!p) return `<span class="c-warn">cat: ${esc(target)}: No such file or directory</span>`;
             return `<div class="block"><span class="c-pink c-bold"># ${esc(p.name)}</span>  <span class="c-violet">[${esc(p.tag)}]</span>
@@ -393,19 +404,19 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
         },
         'cat proxym.log'() {
             const lines = [
-                ['proxym   ', 'INFO', 'Stage DevSecOps — Proxym Group, été 2026'],
-                ['gitea    ', 'INFO', 'Webhook Gitea → Jenkins (jeton d\'API, protection CSRF conservée)'],
-                ['docker   ', 'INFO', '4 Dockerfiles : images JRE Alpine, exécution non-root'],
-                ['sonarqube', 'WARN', 'SAST bloquant : échec si le quality gate n\'est pas franchi'],
-                ['trivy    ', 'WARN', 'SCA bloquant : échec sur CVE CRITICAL corrigeable, avant publication'],
-                ['harbor   ', 'INFO', 'Registre privé, compte robot à droits minimaux'],
-                ['compose  ', 'INFO', 'Déploiement ordonné par healthchecks, puis DAST OWASP ZAP'],
-                ['pipeline ', 'OK', 'Push → déploiement vérifié, sans intervention manuelle'],
+                ['proxym   ', 'INFO', 'DevSecOps internship — Proxym Group, summer 2026'],
+                ['gitea    ', 'INFO', 'Gitea → Jenkins webhook (API token, CSRF protection kept)'],
+                ['docker   ', 'INFO', '4 Dockerfiles: Alpine JRE images, non-root execution'],
+                ['sonarqube', 'WARN', 'Blocking SAST: build fails if the quality gate is not passed'],
+                ['trivy    ', 'WARN', 'Blocking SCA: fails on fixable CRITICAL CVEs, before publishing'],
+                ['harbor   ', 'INFO', 'Private registry, least-privilege robot account'],
+                ['compose  ', 'INFO', 'Healthcheck-ordered deployment, then OWASP ZAP DAST'],
+                ['pipeline ', 'OK', 'Push → verified deployment, no manual steps'],
             ];
             const lvl = { INFO: 'c-violet', WARN: 'c-warn', OK: 'ok' };
             return `<div class="block">${lines
                 .map(([t, l, m]) => `<span class="c-muted">${t}</span> <span class="${lvl[l]}">${l.padEnd(4)}</span> ${esc(m)}`)
-                .join('\n')}\n\n<span class="c-muted">→ détails :</span> ${link(PROJECTS[0].url)}</div>`;
+                .join('\n')}\n\n<span class="c-muted">→ details:</span> ${link(PROJECTS[0].url)}</div>`;
         },
         skills() {
             return `<div class="block">${SKILLS.map(
@@ -417,16 +428,16 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
             return `<div class="block"><span class="c-muted"># contact.vcf</span>
 <span class="c-violet">github  </span> ${link(LINKS.github)}
 <span class="c-violet">linkedin</span> ${link(LINKS.linkedin)}
-<span class="c-violet">email   </span> <span class="c-muted">farah.grissa@ensi-uma.tn</span></div>`;
+<span class="c-violet">email   </span> <a href="mailto:farah.grissa@ensi-uma.tn">farah.grissa@ensi-uma.tn</a></div>`;
         },
         async sudo(args) {
             if (args.join(' ') !== 'hire-me') return `<span class="c-warn">sudo: ${esc(args.join(' ') || '')}: command not found</span>`;
             const steps = [
                 '<span class="c-muted">[sudo] password for recruiter:</span> ********',
-                '<span class="ok">[ OK ]</span> Vérification des compétences… DevSecOps, ML, sécurité',
-                '<span class="ok">[ OK ]</span> Vérification de la motivation… <span class="c-pink">100%</span>',
-                '<span class="ok">[ OK ]</span> Aucun conflit d\'horaire détecté',
-                `<span class="c-pink c-bold">Access granted.</span> Prochaine étape : ${link(LINKS.linkedin, 'm\'écrire sur LinkedIn')} ✨`,
+                '<span class="ok">[ OK ]</span> Checking skills… ML, web, security, DevOps',
+                '<span class="ok">[ OK ]</span> Checking motivation… <span class="c-pink">100%</span>',
+                '<span class="ok">[ OK ]</span> No scheduling conflicts detected',
+                `<span class="c-pink c-bold">Access granted.</span> Next step: ${link(LINKS.linkedin, 'message me on LinkedIn')} ✨`,
             ];
             for (const s of steps) {
                 print(s);
@@ -435,13 +446,13 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
             return '';
         },
         history() {
-            return `<div class="block">${hist.map((h, i) => `<span class="c-muted">${String(i + 1).padStart(4)}</span>  ${esc(h)}`).join('\n') || '<span class="c-muted">(vide)</span>'}</div>`;
+            return `<div class="block">${hist.map((h, i) => `<span class="c-muted">${String(i + 1).padStart(4)}</span>  ${esc(h)}`).join('\n') || '<span class="c-muted">(empty)</span>'}</div>`;
         },
         date() {
             return esc(new Date().toString());
         },
         banner() {
-            return `<div class="banner">root<span class="at">@</span>farah</div><span class="c-muted">Cyber · DevSecOps · ML — tape </span><span class="c-pink">help</span><span class="c-muted"> ou clique une commande ci-dessous.</span>`;
+            return `<div class="banner">root<span class="at">@</span>farah</div><span class="c-muted">Computer engineering student — type </span><span class="c-pink">help</span><span class="c-muted"> or click a command below.</span>`;
         },
         echo(args) {
             return esc(args.join(' '));
@@ -451,7 +462,7 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
             return null;
         },
         exit() {
-            return '<span class="c-muted">logout… pour de faux. Tu ne peux pas partir si vite 😄</span>';
+            return '<span class="c-muted">logout… just kidding. You can\'t leave that fast 😄</span>';
         },
         rm(args) {
             return args.includes('-rf')
@@ -476,7 +487,7 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
         let out;
         if (line === 'cat proxym.log') out = commands['cat proxym.log']();
         else if (commands[name]) out = await commands[name](args);
-        else out = `<span class="c-warn">zsh: command not found: ${esc(name)}</span> — tape <span class="c-pink">help</span>`;
+        else out = `<span class="c-warn">zsh: command not found: ${esc(name)}</span> — type <span class="c-pink">help</span>`;
         if (out) print(out);
         $screen.scrollTop = $screen.scrollHeight;
     }
@@ -538,8 +549,8 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
     const BOOT = [
         ['Starting <span class="c-violet">FarahOS 3.0</span> (kernel 6.ensi-ia)…', false],
         ['Mounting <span class="c-cyan">/home/farah</span>', true],
-        ['Loading skills: security, devsecops, ml', true],
-        ['Loading projects (6 found)', true],
+        ['Loading skills: agentic-ai, ml, devsecops, web', true],
+        [`Loading projects (${PROJECTS.length} found)`, true],
         ['Starting coffee.service', true],
         ['Reached target <span class="c-pink">Portfolio</span>', true],
     ];
