@@ -205,14 +205,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
 <div class="window" role="application" aria-label="Terminal portfolio of Farah Grissa">
     <div class="titlebar">
         <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="title"><span class="tag">●</span> farah@ensi: ~ — zsh — 120×40</div>
+        <div class="title"><span class="tag">●</span> farah@it-tech: ~ — zsh — 120×40</div>
         <div aria-hidden="true">⌘</div>
     </div>
 
     <div class="screen" id="screen" tabindex="-1" aria-live="polite">
         <div id="history"></div>
         <div class="prompt-row" id="promptRow" hidden>
-            <span><span class="p-user">farah</span><span class="p-at">@</span><span class="p-host">ensi</span><span class="p-at">:</span><span class="p-path">~</span><span class="c-pink">$</span></span>
+            <span><span class="p-user">farah</span><span class="p-at">@</span><span class="p-host">it-tech</span><span class="p-at">:</span><span class="p-path">~</span><span class="c-pink">$</span></span>
             <label class="input-wrap" for="cmd">
                 <input id="cmd" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Type a command, for example help">
                 <span class="caret" id="caret" aria-hidden="true"></span>
@@ -326,7 +326,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
     const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
     const link = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${esc(label ?? href.replace(/^https?:\/\//, ''))}</a>`;
     const promptHtml = (cmd) =>
-        `<span class="p-user">farah</span><span class="p-at">@</span><span class="p-host">ensi</span><span class="p-at">:</span><span class="p-path">~</span><span class="c-pink">$</span> ${esc(cmd)}`;
+        `<span class="p-user">farah</span><span class="p-at">@</span><span class="p-host">it-tech</span><span class="p-at">:</span><span class="p-path">~</span><span class="c-pink">$</span> ${esc(cmd)}`;
 
     function print(html, cls = 'out') {
         const el = document.createElement('div');
@@ -380,7 +380,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-
             if (args[0] === 'projects' || args[0] === 'projects/') {
                 return `<div class="block"><span class="c-muted">total ${PROJECTS.length}</span>\n${PROJECTS.map(
                     (p) =>
-                        `<span class="c-muted">drwxr-xr-x</span>  <span class="dir">${esc(p.id.padEnd(20))}</span> <span class="c-violet">[${esc(p.tag)}]</span> ${esc(p.summary)}`,
+                        `<span class="c-muted">drwxr-xr-x</span>  <span class="dir">${esc(p.id.padEnd(20))}</span> ${link(p.url, 'github ↗')}  <span class="c-violet">[${esc(p.tag)}]</span> ${esc(p.summary)}`,
                 ).join('\n')}\n\n<span class="c-muted">→ </span><span class="c-pink">cat ${PROJECTS[0].id}</span><span class="c-muted"> for details</span></div>`;
             }
             return `<div class="block"><span class="dir">projects/</span>   <span class="c-pink">proxym.log</span>   <span class="c-violet">skills.txt</span>   <span class="c-cyan">contact.vcf</span>   <span class="c-muted">.secrets (permission denied)</span></div>`;
@@ -547,7 +547,7 @@ ${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
 
     // ---------- boot sequence ----------
     const BOOT = [
-        ['Starting <span class="c-violet">FarahOS 3.0</span> (kernel 6.ensi-ia)…', false],
+        ['Starting <span class="c-violet">FarahOS 3.0</span> (kernel 6.ai)…', false],
         ['Mounting <span class="c-cyan">/home/farah</span>', true],
         ['Loading skills: agentic-ai, ml, devsecops, web', true],
         [`Loading projects (${PROJECTS.length} found)`, true],
