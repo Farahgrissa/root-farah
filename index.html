@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Farah Grissa — élève ingénieure ENSI · cybersécurité, DevSecOps, ML. Portfolio terminal.">
+<title>root@farah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,800;1,400&family=VT323&display=swap">
+<style>
+/* Layout: one full-height terminal window on a violet-black desk, quick-command chips pinned under the prompt. */
+:root {
+    color-scheme: dark;
+    --desk: #0b0612;        /* violet-black background */
+    --window: #120a1c;      /* terminal surface */
+    --chrome: #1b1028;      /* title bar */
+    --line: #2e1d42;        /* hairlines */
+    --pink: #ff2e97;        /* primary neon */
+    --violet: #b388ff;      /* secondary accent */
+    --cyan: #3ef0ff;        /* status / links */
+    --text: #f3e6f7;        /* body text */
+    --muted: #9a86ad;       /* comments */
+    --ok: #3ef0ff;
+    --warn: #ffd166;
+    --font-term: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    --font-pixel: 'VT323', 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+    background:
+        radial-gradient(1200px 600px at 85% -10%, rgba(255, 46, 151, 0.12), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(179, 136, 255, 0.12), transparent 60%),
+        var(--desk);
+    color: var(--text);
+    font-family: var(--font-term);
+    font-size: 14px;
+    padding-block: 24px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    justify-content: center;
+}
+.window {
+    width: 100%;
+    max-width: 980px;
+    height: calc(100% - 0px);
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    background: var(--window);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px rgba(255, 46, 151, 0.08), 0 30px 80px -20px rgba(255, 46, 151, 0.25), 0 0 120px -40px rgba(62, 240, 255, 0.25);
+    overflow: hidden;
+    position: relative;
+}
+/* CRT scanlines, very subtle */
+.window::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+    mix-blend-mode: overlay;
+}
+.titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+}
+.dots { display: flex; gap: 7px; }
+.dots span { width: 11px; height: 11px; border-radius: 50%; display: block; }
+.dots span:nth-child(1) { background: var(--pink); }
+.dots span:nth-child(2) { background: var(--violet); }
+.dots span:nth-child(3) { background: var(--cyan); }
+.titlebar .title { flex: 1; text-align: center; letter-spacing: 0.04em; }
+.titlebar .tag { color: var(--pink); }
+
+.screen {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 18px 20px 8px;
+    line-height: 1.6;
+    scrollbar-color: var(--line) transparent;
+}
+.screen:focus { outline: none; }
+.out { white-space: pre-wrap; word-break: break-word; margin: 0; }
+.out + .out { margin-top: 2px; }
+.block { margin: 6px 0 14px; }
+
+.p-user { color: var(--pink); font-weight: 600; }
+.p-at { color: var(--muted); }
+.p-host { color: var(--violet); font-weight: 600; }
+.p-path { color: var(--cyan); }
+.c-pink { color: var(--pink); }
+.c-violet { color: var(--violet); }
+.c-cyan { color: var(--cyan); }
+.c-muted { color: var(--muted); }
+.c-warn { color: var(--warn); }
+.c-bold { font-weight: 800; }
+.ok { color: var(--ok); font-weight: 600; }
+a { color: var(--cyan); text-decoration: underline; text-decoration-color: rgba(62, 240, 255, 0.4); text-underline-offset: 3px; }
+a:hover { color: var(--pink); text-decoration-color: var(--pink); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+
+.banner {
+    font-family: var(--font-pixel);
+    font-size: clamp(44px, 9vw, 84px);
+    line-height: 0.9;
+    color: var(--pink);
+    text-shadow: 0 0 6px rgba(255, 46, 151, 0.7), 0 0 24px rgba(255, 46, 151, 0.45), 2px 0 0 rgba(62, 240, 255, 0.55);
+    margin: 4px 0 2px;
+    letter-spacing: 0.02em;
+}
+.banner .at { color: var(--violet); text-shadow: 0 0 8px rgba(179, 136, 255, 0.6); }
+
+.fetch { display: grid; grid-template-columns: auto 1fr; gap: 6px 26px; align-items: start; }
+.fetch .art { color: var(--pink); line-height: 1.15; white-space: pre; font-size: 12px; text-shadow: 0 0 10px rgba(255, 46, 151, 0.35); }
+.fetch .info { min-width: 0; }
+.fetch .info .k { color: var(--violet); font-weight: 600; display: inline-block; min-width: 10ch; }
+.swatches { display: flex; gap: 0; margin-top: 8px; }
+.swatches span { width: 22px; height: 12px; display: block; }
+
+.grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 4px 24px; }
+.dir { color: var(--cyan); font-weight: 600; }
+.bar { display: inline-block; color: var(--pink); letter-spacing: -1px; }
+
+.prompt-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.input-wrap { position: relative; flex: 1; min-width: 12ch; display: flex; align-items: baseline; }
+#cmd {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: var(--text);
+    font: inherit;
+    caret-color: transparent;
+    padding: 0;
+}
+.caret {
+    position: absolute;
+    top: 0.2em;
+    width: 0.62em;
+    height: 1.15em;
+    background: var(--pink);
+    box-shadow: 0 0 10px var(--pink);
+    animation: blink 1.05s steps(1) infinite;
+    pointer-events: none;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.dock {
+    border-top: 1px solid var(--line);
+    background: linear-gradient(to bottom, rgba(27, 16, 40, 0.6), rgba(27, 16, 40, 0.95));
+    padding: 10px 14px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+.dock .hint { color: var(--muted); font-size: 12px; margin-right: 4px; }
+.chip {
+    font: inherit;
+    font-size: 12.5px;
+    color: var(--text);
+    background: rgba(255, 46, 151, 0.06);
+    border: 1px solid rgba(255, 46, 151, 0.35);
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.chip::before { content: "$ "; color: var(--muted); }
+.chip:hover { background: rgba(255, 46, 151, 0.16); border-color: var(--pink); box-shadow: 0 0 14px -2px rgba(255, 46, 151, 0.6); }
+.chip.hire { border-color: rgba(62, 240, 255, 0.5); background: rgba(62, 240, 255, 0.08); }
+.chip.hire:hover { border-color: var(--cyan); box-shadow: 0 0 14px -2px rgba(62, 240, 255, 0.7); }
+
+.skip { position: absolute; right: 14px; bottom: 64px; font: inherit; font-size: 11px; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 4px; padding: 3px 8px; cursor: pointer; }
+
+@media (max-width: 560px) {
+    body { padding-block: 0; }
+    .window { border-radius: 0; border-left: 0; border-right: 0; min-height: 100%; }
+    .fetch { grid-template-columns: 1fr; }
+    .fetch .art { font-size: 9px; }
+    .screen { padding: 14px 12px 6px; font-size: 13px; }
+    .titlebar .title { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .caret { animation: none; }
+    .chip { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="window" role="application" aria-label="Terminal portfolio of Farah Grissa">
+    <div class="titlebar">
+        <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="title"><span class="tag">●</span> farah@ensi: ~ — zsh — 120×40</div>
+        <div aria-hidden="true">⌘</div>
+    </div>
+
+    <div class="screen" id="screen" tabindex="-1" aria-live="polite">
+        <div id="history"></div>
+        <div class="prompt-row" id="promptRow" hidden>
+            <span><span class="p-user">farah</span><span class="p-at">@</span><span class="p-host">ensi</span><span class="p-at">:</span><span class="p-path">~</span><span class="c-pink">$</span></span>
+            <label class="input-wrap" for="cmd">
+                <input id="cmd" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Type a command, for example help">
+                <span class="caret" id="caret" aria-hidden="true"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="dock" aria-label="Quick commands">
+        <span class="hint">pressée ? clique →</span>
+        <button class="chip" data-cmd="whoami" type="button">whoami</button>
+        <button class="chip" data-cmd="ls projects" type="button">ls projects</button>
+        <button class="chip" data-cmd="cat proxym.log" type="button">cat proxym.log</button>
+        <button class="chip" data-cmd="skills" type="button">skills</button>
+        <button class="chip" data-cmd="contact" type="button">contact</button>
+        <button class="chip hire" data-cmd="sudo hire-me" type="button">sudo hire-me</button>
+    </div>
+    <button class="skip" id="skip" type="button" hidden>skip boot ⏎</button>
+</div>
+
+<script>
+(() => {
+    const $history = document.getElementById('history');
+    const $screen = document.getElementById('screen');
+    const $promptRow = document.getElementById('promptRow');
+    const $cmd = document.getElementById('cmd');
+    const $caret = document.getElementById('caret');
+    const $skip = document.getElementById('skip');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const LINKS = {
+        github: 'https://github.com/Farahgrissa',
+        linkedin: 'https://www.linkedin.com/in/farah-grissa/',
+    };
+
+    const PROJECTS = [
+        {
+            id: 'devsecops-pipeline',
+            name: 'Steam-Microservices-DevSecOps',
+            tag: 'DevSecOps',
+            summary: 'Chaîne CI/CD sécurisée pour 4 microservices Spring Boot — stage Proxym Group.',
+            stack: 'Jenkins · Docker · SonarQube · Trivy · OWASP ZAP · Harbor',
+            highlights: ['SAST SonarQube bloquant (quality gate)', 'SCA Trivy bloquant sur CVE CRITICAL corrigeable', 'Registre privé Harbor, compte robot à droits minimaux', 'DAST OWASP ZAP après déploiement'],
+            url: 'https://github.com/Farahgrissa/Steam-Microservices-DevSecOps',
+        },
+        {
+            id: 'ids-xai',
+            name: 'ids-xai-classification',
+            tag: 'ML · Security',
+            summary: 'Détection d\'intrusion réseau explicable sur CSE-CIC-IDS2018.',
+            stack: 'Python · scikit-learn · XGBoost · SHAP · LIME · Streamlit · FastAPI',
+            highlights: ['5 modèles comparés', 'Chaque alerte expliquée (SHAP / LIME)', 'App Streamlit + API FastAPI en ligne'],
+            url: 'https://github.com/Farahgrissa/ids-xai-classification',
+            demo: 'https://ids-xai-classification.streamlit.app',
+        },
+        {
+            id: 'openstack-anomaly',
+            name: 'openstack-log-anomaly-detection',
+            tag: 'AIOps',
+            summary: 'Détection d\'incidents quasi temps réel sur logs OpenStack, explications par LLM.',
+            stack: 'Fluentd · OpenSearch · scikit-learn · Gemini/Groq · Streamlit',
+            highlights: ['AUC-ROC 0.974 · F1 0.84', '7/7 incidents détectés', 'Worker streaming + dashboard live'],
+            url: 'https://github.com/Farahgrissa/openstack-log-anomaly-detection',
+        },
+        {
+            id: 'rsa-breaker',
+            name: 'Attaque_RSA',
+            tag: 'Crypto',
+            summary: 'Récupération de clés privées RSA faibles.',
+            stack: 'Python · sympy',
+            highlights: ['Attaque de Wiener (fractions continues)', 'Lookup FactorDB', 'Factorisation Pollard rho / SIQS'],
+            url: 'https://github.com/Farahgrissa/Attaque_RSA',
+        },
+        {
+            id: 'clinova',
+            name: 'medical-appointments (Clinova)',
+            tag: 'Full-stack',
+            summary: 'Prise de rendez-vous médicaux patients / médecins / admin.',
+            stack: 'Laravel · Vue 3 · Inertia · PostgreSQL · Docker',
+            highlights: ['78 tests, CI GitHub Actions', 'Anti double-réservation (verrou SQL)', 'Image Docker + blueprint Render'],
+            url: 'https://github.com/Farahgrissa/medical-appointments',
+        },
+        {
+            id: 'tunihack',
+            name: 'TuniHack 11 (club OSSEC)',
+            tag: 'Web',
+            summary: 'Site de l\'événement TuniHack : programme, compte à rebours, inscriptions d\'équipes.',
+            stack: 'React · Tailwind CSS',
+            highlights: ['Contraintes de taille d\'équipe dynamiques', 'Calcul automatique du prix'],
+            url: 'https://github.com/Farahgrissa/ossec-community',
+        },
+    ];
+
+    const SKILLS = [
+        ['Security / DevSecOps', ['Jenkins', 'Docker', 'SonarQube', 'Trivy', 'OWASP ZAP', 'Harbor', 'Linux'], 8],
+        ['Data / ML', ['Python', 'scikit-learn', 'XGBoost', 'SHAP', 'pandas', 'FastAPI', 'Streamlit'], 8],
+        ['Observability', ['Fluentd', 'OpenSearch', 'OpenStack'], 6],
+        ['Web', ['TypeScript', 'React', 'Vue', 'Laravel', 'Spring Boot', 'PostgreSQL'], 7],
+    ];
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+    const link = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${esc(label ?? href.replace(/^https?:\/\//, ''))}</a>`;
+    const promptHtml = (cmd) =>
+        `<span class="p-user">farah</span><span class="p-at">@</span><span class="p-host">ensi</span><span class="p-at">:</span><span class="p-path">~</span><span class="c-pink">$</span> ${esc(cmd)}`;
+
+    function print(html, cls = 'out') {
+        const el = document.createElement('div');
+        el.className = cls;
+        el.innerHTML = html;
+        $history.appendChild(el);
+        $screen.scrollTop = $screen.scrollHeight;
+        return el;
+    }
+
+    const ART = String.raw`
+    .--.
+   |o_o |
+   |:_/ |
+  //   \ \
+ (|     | )
+/'\_   _/\`\
+\___)=(___/`;
+
+    const commands = {
+        help() {
+            const rows = [
+                ['whoami', 'qui je suis'],
+                ['ls projects', 'mes projets'],
+                ['cat <projet>', 'détails d\'un projet (tab pour compléter)'],
+                ['cat proxym.log', 'mon stage DevSecOps'],
+                ['skills', 'compétences'],
+                ['contact', 'me joindre'],
+                ['sudo hire-me'],
+                ['history · clear · date · banner', 'utilitaires'],
+            ];
+            return `<div class="block"><span class="c-muted"># commandes disponibles</span>\n${rows
+                .map(([c, d]) => `  <span class="c-pink">${esc(c.padEnd(20))}</span><span class="c-muted">${esc(d)}</span>`)
+                .join('\n')}</div>`;
+        },
+        whoami() {
+            const info = [
+                ['user', '<span class="c-pink c-bold">Farah Grissa</span>'],
+                ['role', 'élève ingénieure en informatique'],
+                ['school', 'ENSI — Tunisie · spécialité IA'],
+                ['focus', 'cybersécurité · DevSecOps · ML explicable'],
+                ['uptime', '3e année, 2 stages'],
+                ['shell', 'zsh + beaucoup de café'],
+                ['status', '<span class="c-cyan">● open to opportunities</span>'],
+            ];
+            return `<div class="block fetch"><div class="art" aria-hidden="true">${esc(ART)}</div><div class="info">${info
+                .map(([k, v]) => `<div><span class="k">${k}</span> ${v}</div>`)
+                .join('')}<div class="swatches" aria-hidden="true"><span style="background:var(--pink)"></span><span style="background:var(--violet)"></span><span style="background:var(--cyan)"></span><span style="background:var(--warn)"></span><span style="background:var(--muted)"></span><span style="background:var(--text)"></span></div></div></div>`;
+        },
+        ls(args) {
+            if (args[0] === 'projects' || args[0] === 'projects/') {
+                return `<div class="block"><span class="c-muted">total ${PROJECTS.length}</span>\n${PROJECTS.map(
+                    (p) =>
+                        `<span class="c-muted">drwxr-xr-x</span>  <span class="dir">${esc(p.id.padEnd(20))}</span> <span class="c-violet">[${esc(p.tag)}]</span> ${esc(p.summary)}`,
+                ).join('\n')}\n\n<span class="c-muted">→ </span><span class="c-pink">cat ${PROJECTS[0].id}</span><span class="c-muted"> pour les détails</span></div>`;
+            }
+            return `<div class="block"><span class="dir">projects/</span>   <span class="c-pink">proxym.log</span>   <span class="c-violet">skills.txt</span>   <span class="c-cyan">contact.vcf</span>   <span class="c-muted">.secrets (permission denied)</span></div>`;
+        },
+        cat(args) {
+            const target = (args[0] || '').replace(/^projects\//, '').replace(/\/$/, '');
+            if (!target) return `<span class="c-warn">cat: opérande manquante</span> — essaie <span class="c-pink">cat proxym.log</span>`;
+            if (target === 'proxym.log') return commands['cat proxym.log']();
+            if (target === 'skills.txt') return commands.skills();
+            if (target === 'contact.vcf') return commands.contact();
+            if (target === '.secrets') return `<span class="c-warn">cat: .secrets: Permission denied</span> <span class="c-muted">(bien essayé)</span>`;
+            const p = PROJECTS.find((x) => x.id === target);
+            if (!p) return `<span class="c-warn">cat: ${esc(target)}: No such file or directory</span>`;
+            return `<div class="block"><span class="c-pink c-bold"># ${esc(p.name)}</span>  <span class="c-violet">[${esc(p.tag)}]</span>
+${esc(p.summary)}
+
+<span class="c-muted">stack   </span> ${esc(p.stack)}
+${p.highlights.map((h) => `<span class="ok">  ✓</span> ${esc(h)}`).join('\n')}
+
+<span class="c-muted">repo    </span> ${link(p.url)}${p.demo ? `\n<span class="c-muted">demo    </span> ${link(p.demo)}` : ''}</div>`;
+        },
+        'cat proxym.log'() {
+            const lines = [
+                ['proxym   ', 'INFO', 'Stage DevSecOps — Proxym Group, été 2026'],
+                ['gitea    ', 'INFO', 'Webhook Gitea → Jenkins (jeton d\'API, protection CSRF conservée)'],
+                ['docker   ', 'INFO', '4 Dockerfiles : images JRE Alpine, exécution non-root'],
+                ['sonarqube', 'WARN', 'SAST bloquant : échec si le quality gate n\'est pas franchi'],
+                ['trivy    ', 'WARN', 'SCA bloquant : échec sur CVE CRITICAL corrigeable, avant publication'],
+                ['harbor   ', 'INFO', 'Registre privé, compte robot à droits minimaux'],
+                ['compose  ', 'INFO', 'Déploiement ordonné par healthchecks, puis DAST OWASP ZAP'],
+                ['pipeline ', 'OK', 'Push → déploiement vérifié, sans intervention manuelle'],
+            ];
+            const lvl = { INFO: 'c-violet', WARN: 'c-warn', OK: 'ok' };
+            return `<div class="block">${lines
+                .map(([t, l, m]) => `<span class="c-muted">${t}</span> <span class="${lvl[l]}">${l.padEnd(4)}</span> ${esc(m)}`)
+                .join('\n')}\n\n<span class="c-muted">→ détails :</span> ${link(PROJECTS[0].url)}</div>`;
+        },
+        skills() {
+            return `<div class="block">${SKILLS.map(
+                ([cat, items, lvl]) =>
+                    `<span class="c-violet c-bold">${esc(cat.padEnd(22))}</span><span class="bar">${'█'.repeat(lvl)}</span><span class="c-muted">${'░'.repeat(10 - lvl)}</span>\n  <span class="c-muted">└─</span> ${items.map(esc).join('<span class="c-muted"> · </span>')}`,
+            ).join('\n')}</div>`;
+        },
+        contact() {
+            return `<div class="block"><span class="c-muted"># contact.vcf</span>
+<span class="c-violet">github  </span> ${link(LINKS.github)}
+<span class="c-violet">linkedin</span> ${link(LINKS.linkedin)}
+<span class="c-violet">email   </span> <span class="c-muted">farah.grissa@ensi-uma.tn</span></div>`;
+        },
+        async sudo(args) {
+            if (args.join(' ') !== 'hire-me') return `<span class="c-warn">sudo: ${esc(args.join(' ') || '')}: command not found</span>`;
+            const steps = [
+                '<span class="c-muted">[sudo] password for recruiter:</span> ********',
+                '<span class="ok">[ OK ]</span> Vérification des compétences… DevSecOps, ML, sécurité',
+                '<span class="ok">[ OK ]</span> Vérification de la motivation… <span class="c-pink">100%</span>',
+                '<span class="ok">[ OK ]</span> Aucun conflit d\'horaire détecté',
+                `<span class="c-pink c-bold">Access granted.</span> Prochaine étape : ${link(LINKS.linkedin, 'm\'écrire sur LinkedIn')} ✨`,
+            ];
+            for (const s of steps) {
+                print(s);
+                await wait(reduced ? 0 : 380);
+            }
+            return '';
+        },
+        history() {
+            return `<div class="block">${hist.map((h, i) => `<span class="c-muted">${String(i + 1).padStart(4)}</span>  ${esc(h)}`).join('\n') || '<span class="c-muted">(vide)</span>'}</div>`;
+        },
+        date() {
+            return esc(new Date().toString());
+        },
+        banner() {
+            return `<div class="banner">root<span class="at">@</span>farah</div><span class="c-muted">Cyber · DevSecOps · ML — tape </span><span class="c-pink">help</span><span class="c-muted"> ou clique une commande ci-dessous.</span>`;
+        },
+        echo(args) {
+            return esc(args.join(' '));
+        },
+        clear() {
+            $history.innerHTML = '';
+            return null;
+        },
+        exit() {
+            return '<span class="c-muted">logout… pour de faux. Tu ne peux pas partir si vite 😄</span>';
+        },
+        rm(args) {
+            return args.includes('-rf')
+                ? '<span class="c-warn">rm: refusing to remove \'/\' — nice try.</span>'
+                : '<span class="c-warn">rm: permission denied</span>';
+        },
+    };
+
+    const COMPLETIONS = ['help', 'whoami', 'ls', 'ls projects', 'cat proxym.log', 'skills', 'contact', 'sudo hire-me', 'history', 'clear', 'date', 'banner', ...PROJECTS.map((p) => 'cat ' + p.id)];
+
+    const hist = [];
+    let histIdx = 0;
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function run(raw) {
+        const line = raw.trim();
+        print(promptHtml(line));
+        if (!line) return;
+        hist.push(line);
+        histIdx = hist.length;
+        const [name, ...args] = line.split(/\s+/);
+        let out;
+        if (line === 'cat proxym.log') out = commands['cat proxym.log']();
+        else if (commands[name]) out = await commands[name](args);
+        else out = `<span class="c-warn">zsh: command not found: ${esc(name)}</span> — tape <span class="c-pink">help</span>`;
+        if (out) print(out);
+        $screen.scrollTop = $screen.scrollHeight;
+    }
+
+    function updateCaret() {
+        const measure = updateCaret.m || (updateCaret.m = Object.assign(document.createElement('span'), { style: 'position:absolute;visibility:hidden;white-space:pre;font:inherit' }));
+        if (!measure.isConnected) $cmd.parentElement.appendChild(measure);
+        measure.textContent = $cmd.value.slice(0, $cmd.selectionStart ?? $cmd.value.length);
+        $caret.style.left = measure.offsetWidth + 'px';
+    }
+
+    $cmd.addEventListener('input', updateCaret);
+    $cmd.addEventListener('keyup', updateCaret);
+    $cmd.addEventListener('click', updateCaret);
+    $cmd.addEventListener('keydown', async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const v = $cmd.value;
+            $cmd.value = '';
+            updateCaret();
+            await run(v);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (histIdx > 0) $cmd.value = hist[--histIdx];
+            updateCaret();
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            histIdx = Math.min(hist.length, histIdx + 1);
+            $cmd.value = hist[histIdx] ?? '';
+            updateCaret();
+        } else if (e.key === 'Tab') {
+            e.preventDefault();
+            const v = $cmd.value;
+            const matches = COMPLETIONS.filter((c) => c.startsWith(v) && c !== v);
+            if (matches.length === 1) $cmd.value = matches[0];
+            else if (matches.length > 1) {
+                print(promptHtml(v));
+                print(`<span class="c-muted">${matches.map(esc).join('   ')}</span>`);
+            }
+            updateCaret();
+        } else if (e.key === 'l' && e.ctrlKey) {
+            e.preventDefault();
+            commands.clear();
+        }
+    });
+
+    document.querySelectorAll('.chip').forEach((btn) =>
+        btn.addEventListener('click', async () => {
+            if (booting) finishBoot();
+            await run(btn.dataset.cmd);
+            $cmd.focus({ preventScroll: true });
+        }),
+    );
+    $screen.addEventListener('click', (e) => {
+        if (!e.target.closest('a') && !window.getSelection().toString()) $cmd.focus({ preventScroll: true });
+    });
+
+    // ---------- boot sequence ----------
+    const BOOT = [
+        ['Starting <span class="c-violet">FarahOS 3.0</span> (kernel 6.ensi-ia)…', false],
+        ['Mounting <span class="c-cyan">/home/farah</span>', true],
+        ['Loading skills: security, devsecops, ml', true],
+        ['Loading projects (6 found)', true],
+        ['Starting coffee.service', true],
+        ['Reached target <span class="c-pink">Portfolio</span>', true],
+    ];
+    let booting = true;
+    let bootCancelled = false;
+
+    function finishBoot() {
+        if (!booting) return;
+        bootCancelled = true;
+        booting = false;
+        $skip.hidden = true;
+        $history.innerHTML = '';
+        BOOT.forEach(([m, ok]) => print(ok ? `<span class="ok">[  OK  ]</span> ${m}` : `<span class="c-muted">${m}</span>`));
+        afterBoot();
+    }
+
+    function afterBoot() {
+        print(commands.banner(), 'out block');
+        print(promptHtml('whoami'));
+        print(commands.whoami());
+        $promptRow.hidden = false;
+        updateCaret();
+        $cmd.focus({ preventScroll: true });
+        $screen.scrollTop = 0;
+    }
+
+    async function boot() {
+        if (reduced) return finishBoot();
+        $skip.hidden = false;
+        for (const [m, ok] of BOOT) {
+            if (bootCancelled) return;
+            print(ok ? `<span class="ok">[  OK  ]</span> ${m}` : `<span class="c-muted">${m}</span>`);
+            await wait(ok ? 230 : 320);
+        }
+        if (bootCancelled) return;
+        booting = false;
+        $skip.hidden = true;
+        afterBoot();
+    }
+
+    $skip.addEventListener('click', finishBoot);
+    window.addEventListener('keydown', (e) => {
+        if (booting && (e.key === 'Enter' || e.key === 'Escape')) finishBoot();
+    });
+
+    boot();
+})();
+</script>
+</body>
+</html>
